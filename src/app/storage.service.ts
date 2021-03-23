@@ -9,7 +9,15 @@ export interface Item{
   modified: number;
 }
 
+export interface Contato{
+  id: number;
+  nome: string;
+  email: string;
+  telefone: string;
+}
+
 const ITEMS_KEY = 'doencas';
+const ITEMS_KEY_CONTATOS = 'contatos';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +34,17 @@ export class StorageService {
         return this.storage.set(ITEMS_KEY, items);
       }else{
         return this.storage.set(ITEMS_KEY, [item]);
+      }
+    });
+  }
+
+  cadastrarContrato(contato: Contato): Promise <any>{
+    return this.storage.get(ITEMS_KEY_CONTATOS).then((contatos: Contato[]) =>{
+      if(contatos){
+        contatos.push(contato);
+        return this.storage.set(ITEMS_KEY_CONTATOS, contatos);
+      }else{
+        return this.storage.set(ITEMS_KEY_CONTATOS, [contato]);
       }
     });
   }

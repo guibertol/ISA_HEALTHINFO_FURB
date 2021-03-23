@@ -28,4 +28,21 @@
 
   <ion-button expand="full" (click)="addItem()">Cadastrar doença</ion-button>
 
+  <ion-item>
+    <ion-label position="fixed">Nome</ion-label>
+    <ion-input [(ngModel)]="contato.nome"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="fixed">Email</ion-label>
+    <ion-input [(ngModel)]="contato.email"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="fixed">Telefone</ion-label>
+    <ion-input [(ngModel)]="contato.telefone"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="cadastrarContato()">Cadastrar Contato</ion-button>
+
 </ion-content>

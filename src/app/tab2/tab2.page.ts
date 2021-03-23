@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Item, StorageService } from '../storage.service';
+import { Item, Contato, StorageService } from '../storage.service';
  
 import { Platform, ToastController, IonList,} from '@ionic/angular';
 
@@ -11,7 +11,9 @@ import { Platform, ToastController, IonList,} from '@ionic/angular';
 export class Tab2Page {
 
   items: Item[] = [];
+  contatos: Contato[] = [];
   newItem: Item = <Item>{};
+  contato: Contato = <Contato>{};
 
   @ViewChild('mylist') mylist: IonList;
 
@@ -30,6 +32,16 @@ export class Tab2Page {
     });
 
    this.exibir_mensagem();
+
+  }
+
+  cadastrarContato(){
+
+    this.contato.id = Date.now();
+    this.strorageService.cadastrarContrato(this.contato).then(item => {
+      this.contato = <Contato>{};
+    });
+
 
   }
 
