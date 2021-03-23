@@ -31,23 +31,24 @@ export class Tab2Page {
       this.newItem = <Item>{};
     });
 
-   this.exibir_mensagem();
+   this.exibir_mensagem('Doença salva com sucesso.');
 
   }
 
   cadastrarContato(){
 
     this.contato.id = Date.now();
-    this.strorageService.cadastrarContrato(this.contato).then(item => {
+    this.strorageService.cadastrarContato(this.contato).then(item => {
       this.contato = <Contato>{};
     });
 
+    this.exibir_mensagem('Contato salvo com sucesso.');
 
   }
 
-  async exibir_mensagem() {
+  async exibir_mensagem(mensagem) {
     const toast = await this.toastController.create({
-      message: 'Cadastrado com sucesso.',
+      message: mensagem,
       duration: 2000
     });
     toast.present();

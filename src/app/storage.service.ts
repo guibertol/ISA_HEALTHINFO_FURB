@@ -38,7 +38,7 @@ export class StorageService {
     });
   }
 
-  cadastrarContrato(contato: Contato): Promise <any>{
+  cadastrarContato(contato: Contato): Promise <any>{
     return this.storage.get(ITEMS_KEY_CONTATOS).then((contatos: Contato[]) =>{
       if(contatos){
         contatos.push(contato);
