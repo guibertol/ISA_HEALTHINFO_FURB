@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { ToastController } from '@ionic/angular';
 
 export interface Item{
   id: number;
@@ -8,17 +9,16 @@ export interface Item{
   modified: number;
 }
 
-const ITEMS_KEY = 'my-items';
+const ITEMS_KEY = 'doencas';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
 
-  constructor(private storage: Storage) { }
+  constructor(private storage: Storage, public toastController: ToastController) { }
   
-
-
+  //Aqui é onde adiciona o item
   addItem(item: Item): Promise <any>{
     return this.storage.get(ITEMS_KEY).then((items: Item[]) =>{
       if(items){
@@ -30,6 +30,7 @@ export class StorageService {
     });
   }
 
+  //Aqui lista o item
   getItems(): Promise<Item[]>{
     return this.storage.get(ITEMS_KEY);
   }
@@ -54,6 +55,8 @@ export class StorageService {
     });
   }
 
+
+  //Aqui apaga o item
   delete(id: number): Promise<Item>{
     return this.storage.get(ITEMS_KEY).then((items: Item[]) =>{
       if(!items || items.length == 0){
@@ -68,9 +71,18 @@ export class StorageService {
         }
       }
 
+      this.exibir_mensagem('Excluido com sucesso.');
       return this.storage.set(ITEMS_KEY, toKeep);
 
     });
+  }
+
+  async exibir_mensagem(mensagem) {
+    const toast = await this.toastController.create({
+      message: mensagem,
+      duration: 2000
+    });
+    toast.present();
   }
 
 }

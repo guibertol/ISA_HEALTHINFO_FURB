@@ -15,11 +15,10 @@ export class Tab2Page {
 
   @ViewChild('mylist') mylist: IonList;
 
-  constructor(private strorageService: StorageService, private plt: Platform) {
+  constructor(private strorageService: StorageService, private plt: Platform, public toastController: ToastController) {
     /*this.plt.ready().then(() => {
       this.loadItems
     });*/
-    this.loadItems();
   }
 
   addItem(){
@@ -28,15 +27,18 @@ export class Tab2Page {
 
     this.strorageService.addItem(this.newItem).then(item => {
       this.newItem = <Item>{};
-      this.loadItems();
     });
+
+   this.exibir_mensagem();
 
   }
 
-  loadItems(){
-    this.strorageService.getItems().then(items => {
-      this.items = items;
+  async exibir_mensagem() {
+    const toast = await this.toastController.create({
+      message: 'Cadastrado com sucesso.',
+      duration: 2000
     });
+    toast.present();
   }
 
 }
