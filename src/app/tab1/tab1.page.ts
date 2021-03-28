@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Item, StorageService } from '../storage.service';
+import { Item, Contato, StorageService } from '../storage.service';
  
 import { Platform, ToastController, IonList,} from '@ionic/angular';
 
@@ -12,19 +12,29 @@ export class Tab1Page {
 
   items: Item[] = [];
   newItem: Item = <Item>{};
+  contatos: Contato[] = [];
 
   @ViewChild('mylist') mylist: IonList;
+  @ViewChild('listaContatos') listaContatos: IonList;
 
   constructor(private strorageService: StorageService, private plt: Platform) {
     this.plt.ready().then(() => {
-      this.loadItems
+      this.loadItems;
+      this.listarContatos;
     });
     this.loadItems();
+    this.listarContatos();
   }
 
   loadItems(){
     this.strorageService.getItems().then(items => {
       this.items = items;
+    });
+  }
+
+  listarContatos(){
+    this.strorageService.getContatos().then(contatos => {
+      this.contatos = contatos;
     });
   }
 
@@ -55,6 +65,13 @@ export class Tab1Page {
     this.strorageService.delete(item.id).then(item => {
       this.mylist.closeSlidingItems();
       this.loadItems();
+    });
+  }
+
+  deletarContato(contato: Contato){
+    this.strorageService.deleteContato(contato.id).then(contato => {
+      this.mylist.closeSlidingItems();
+      this.listarContatos();
     });
   }
 

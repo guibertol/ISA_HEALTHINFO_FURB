@@ -54,6 +54,11 @@ export class StorageService {
     return this.storage.get(ITEMS_KEY);
   }
 
+  //Aqui lista os contatos
+  getContatos(): Promise<Contato[]>{
+    return this.storage.get(ITEMS_KEY_CONTATOS);
+  }
+
   updateItem(item: Item): Promise<any>{
     return this.storage.get(ITEMS_KEY).then((items: Item[]) =>{
       if(!items || items.length == 0){
@@ -92,6 +97,27 @@ export class StorageService {
 
       this.exibir_mensagem('Excluido com sucesso.');
       return this.storage.set(ITEMS_KEY, toKeep);
+
+    });
+  }
+
+  //Aqui apaga o contato
+  deleteContato(id: number): Promise<Contato>{
+    return this.storage.get(ITEMS_KEY_CONTATOS).then((contatos: Contato[]) =>{
+      if(!contatos || contatos.length == 0){
+        return null;
+      }
+
+      let toKeep: Contato[] = [];
+
+      for(let i of contatos){
+        if(i.id !== id){
+          toKeep.push(i);
+        }
+      }
+
+      this.exibir_mensagem('Excluido com sucesso.');
+      return this.storage.set(ITEMS_KEY_CONTATOS, toKeep);
 
     });
   }
