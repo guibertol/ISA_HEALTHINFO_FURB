@@ -8,6 +8,9 @@ import { IonicStorageModule } from '@ionic/storage';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -15,7 +18,7 @@ import { AppComponent } from './app.component';
     IonicModule.forRoot(), 
     AppRoutingModule,
   IonicStorageModule.forRoot()],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, LocalNotifications],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
