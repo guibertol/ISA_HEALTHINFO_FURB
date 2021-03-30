@@ -13,8 +13,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
-
-  <ion-button (click)="exibirnotificacao()">Exibir notificação</ion-button>
+  <ion-button expand="full" (click)="exibirnotificacao()" *ngIf="exibido == false">Exibir notificação</ion-button>
+  <ion-button expand="full" (click)="removernotificacao()" *ngIf="exibido == true">Remover notificação</ion-button>
 
 </ion-content>

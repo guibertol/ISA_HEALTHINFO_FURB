@@ -11,6 +11,7 @@ import { Item, Contato, StorageService } from '../storage.service';
 export class Tab3Page {
 
   items: Item[] = [];
+  exibido = false;
 
   constructor(private plt: Platform, private alertCtrl: AlertController, private LocalNotifications: LocalNotifications, private strorageService: StorageService) {
     this.plt.ready().then(() => {
@@ -34,6 +35,7 @@ export class Tab3Page {
       data: { secret: 'KEY_ISA_HEALTINFO' },
       sticky: true
     });
+    this.exibido = true;
   }
 
   showAlert(header, sub, msg){
@@ -63,6 +65,13 @@ export class Tab3Page {
     });
 
     return string;
+
+  }
+
+  removernotificacao(){
+
+    this.exibido = false;
+    this.LocalNotifications.clearAll();
 
   }
   
