@@ -9,15 +9,17 @@ export interface Doenca{
   modified: number;
 }
 
-export interface Contato{
+export interface Contato {
   id: number;
   nome: string;
   email: string;
   telefone: string;
 }
+
 //
+
 const DOENCA_KEY = 'doencas';
-const CONTATCT_KEY = 'contatos';
+const CONTATO_KEY = 'contatos';
 
 @Injectable({
   providedIn: 'root'
@@ -52,81 +54,74 @@ export class StorageService {
         return null;
       }
 
-      //TODO: this process to update the list could be better 
-      let newItems : Doenca[] = [];
-      for(let i of listaDoencas){
-        if(i.id === novaDoenca.id){
-          newItems.push(novaDoenca);
-        }else{
-          newItems.push(i);
-        }
-      }
-
-      return this.storage.set(DOENCA_KEY, newItems);
-
+      const idUpdate = novaDoenca.id;
+      const novaLista = listaDoencas.map( d => d.id === idUpdate ? novaDoenca : d);
+      return this.storage.set(DOENCA_KEY, novaLista);
     });
   }
 
 
   //Aqui apaga a doenca
-  deleteDoencas(id: number): Promise<Doenca>{
-    return this.storage.get(DOENCA_KEY).then((doencas: Doenca[]) =>{
-      if(!doencas || doencas.length == 0){
-          //Removendo uma doença sem doenaças cadatradas.
-        return null;
-      }
+  async deleteDoencas(id: number): Promise<void>{
+    const doencas = await this.storage.get(DOENCA_KEY);
+    if(!doencas || doencas.length == 0){
+      console.log('errou')
+      console.log(doencas)
+      return;
+    }
 
-      let toKeep: Doenca[] = [];
-
-      //TODO: this process to update the list could be better 
-      for(let i of doencas){
-        if(i.id !== id){
-          toKeep.push(i);
-        } } 
-      this.exibir_mensagem('Excluido com sucesso.');
-      return this.storage.set(DOENCA_KEY, toKeep);
-
-    });
+    const toKeep: Doenca[] = doencas.filter( d => d.id !== id);
+    this.exibir_mensagem('Excluido com sucesso.');
+    this.storage.set(DOENCA_KEY, toKeep);
+    return;
   }
 
   //----------------------------------------------------------------------------
 
   cadastrarContato(contato: Contato): Promise <any>{
-    return this.storage.get(CONTATCT_KEY).then((contatos: Contato[]) =>{
+    return this.storage.get(CONTATO_KEY).then((contatos: Contato[]) =>{
       if(contatos){
         contatos.push(contato);
-        return this.storage.set(CONTATCT_KEY, contatos);
+        return this.storage.set(CONTATO_KEY, contatos);
       }else{
-        return this.storage.set(CONTATCT_KEY, [contato]);
+        return this.storage.set(CONTATO_KEY, [contato]);
       }
     });
   }
 
   //Aqui lista os contatos
   getContatos(): Promise<Contato[]>{
-    return this.storage.get(CONTATCT_KEY);
+    return this.storage.get(CONTATO_KEY);
+  }
+
+  updateContatos(novoContato: Doenca): Promise<any>{
+    return this.storage.get(CONTATO_KEY).then((contatos: Doenca[]) =>{
+      if(!contatos || contatos.length == 0){
+        //Atualizando uma doença sem ter nenhuma cadastrada
+        return null;
+      }
+
+      const idUpdate = novoContato.id;
+      const novaLista = contatos.map( c => c.id === idUpdate ? novoContato : c);
+      return this.storage.set(CONTATO_KEY, novaLista);
+    });
   }
 
   //Aqui apaga o contato
   deleteContato(id: number): Promise<Contato>{
-    return this.storage.get(CONTATCT_KEY).then((contatos: Contato[]) =>{
+    return this.storage.get(CONTATO_KEY).then((contatos: Contato[]) =>{
       if(!contatos || contatos.length == 0){
         return null;
       }
 
-      let toKeep: Contato[] = [];
-
-      for(let i of contatos){
-        if(i.id !== id){
-          toKeep.push(i);
-        }
-      }
-
+      const toKeep: Contato[] = contatos.filter( c => c.id !== id);
       this.exibir_mensagem('Excluido com sucesso.');
-      return this.storage.set(CONTATCT_KEY, toKeep);
+      return this.storage.set(CONTATO_KEY, toKeep);
 
     });
   }
+
+  //----------------------------------------------------------------------------
 
   async exibir_mensagem(mensagem) {
     const toast = await this.toastController.create({

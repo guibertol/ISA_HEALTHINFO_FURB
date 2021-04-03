@@ -59,9 +59,10 @@ export class Tab1Page {
   }
 
   deleteDoenca(doenca: Doenca){
-    this.strorageService.deleteDoencas(doenca.id).then(doenca => {
+    this.strorageService.deleteDoencas(doenca.id).then(() => {
       this.mylist.closeSlidingItems();
       this.loadDoencas();
+      this.strorageService.deleteDoencas(doenca.id);
     });
   }
 
