@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Doenca, Contato, Medicamento, StorageService } from '../storage.service';
+import { Doenca, Contato, Medicamento, Alergia, StorageService } from '../storage.service';
  
 import { Platform, ToastController, IonList,} from '@ionic/angular';
 
@@ -14,6 +14,7 @@ export class Tab1Page {
   newDoenca: Doenca = <Doenca>{};
   contatos: Contato[] = [];
   medicamentos: Medicamento[] = [];
+  alergias: Alergia[] = [];
 
   @ViewChild('listaDoencas') listaDoencas: IonList;
   @ViewChild('listaContatos') listaContatos: IonList;
@@ -22,6 +23,7 @@ export class Tab1Page {
   constructor(private storageService: StorageService, private plt: Platform) {
     this.loadDoencas();
     this.loadContatos();
+    this.loadAlergias();
   }
 
   loadDoencas(){
@@ -33,6 +35,12 @@ export class Tab1Page {
   loadContatos(){
     this.storageService.getContatos().then(contatos => {
       this.contatos = contatos;
+    });
+  }
+
+  loadAlergias(){
+    this.storageService.getAlergias().then(alergias => {
+      this.alergias = alergias;
     });
   }
 

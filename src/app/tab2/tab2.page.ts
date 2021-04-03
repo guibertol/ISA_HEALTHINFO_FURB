@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Doenca, Contato, Medicamento, StorageService } from '../storage.service';
+import { Doenca, Contato, Medicamento, Alergia, StorageService } from '../storage.service';
  
 import { Platform, ToastController, IonList,} from '@ionic/angular';
 
@@ -13,6 +13,7 @@ export class Tab2Page {
   doenca: Doenca = <Doenca>{};
   contato: Contato = <Contato>{};
   medicamento: Medicamento = <Medicamento>{};
+  alergia: Alergia = <Alergia>{};
 
   @ViewChild('mylist') mylist: IonList;
 
@@ -31,6 +32,18 @@ export class Tab2Page {
     });
 
    this.exibir_mensagem('Doença salva com sucesso.');
+
+  }
+
+  cadastrarAlergia(){
+    this.alergia.modified = Date.now();
+    this.alergia.id = Date.now();
+
+    this.storageService.cadastrarAlergia(this.alergia).then(item => {
+      this.alergia = <Alergia>{};
+    });
+
+   this.exibir_mensagem('Alergia salva com sucesso.');
 
   }
 

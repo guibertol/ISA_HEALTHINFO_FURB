@@ -24,11 +24,18 @@ export interface Medicamento {
   desc: string;
 }
 
+export interface Alergia {
+  id: number;
+  modified: number;
+  nome: string;
+}
+
 //
 
 const DOENCA_KEY = 'doencas';
 const CONTATO_KEY = 'contatos';
 const MEDICAM_KEY = 'medicamentos';
+const ALERGIA_KEY = 'alergias';
 
 @Injectable({
   providedIn: 'root'
@@ -130,6 +137,21 @@ export class StorageService {
     });
   }
 
+  cadastrarAlergia(alergia: Alergia): Promise <any>{
+    return this.storage.get(ALERGIA_KEY).then((alergias: Alergia[]) =>{
+      if(alergias){
+        alergias.push(alergia);
+        return this.storage.set(ALERGIA_KEY, alergias);
+      }else{
+        return this.storage.set(ALERGIA_KEY, [alergia]);
+      }
+    });
+  }
+
+  getAlergias(): Promise<Alergia[]>{
+    return this.storage.get(ALERGIA_KEY);
+  }
+  
   //----------------------------------------------------------------------------
 
   cadastrarMedicamento(novoMedicamento: Medicamento): Promise <any>{
