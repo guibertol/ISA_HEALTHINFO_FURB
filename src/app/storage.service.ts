@@ -151,6 +151,20 @@ export class StorageService {
   getAlergias(): Promise<Alergia[]>{
     return this.storage.get(ALERGIA_KEY);
   }
+
+  //Aqui apaga a alergia
+  deleteAlergia(id: number): Promise<Alergia>{
+    return this.storage.get(ALERGIA_KEY).then((alergias: Alergia[]) =>{
+      if(!alergias || alergias.length == 0){
+        return null;
+      }
+
+      const toKeep: Alergia[] = alergias.filter( c => c.id !== id);
+      this.exibir_mensagem('Excluido com sucesso.');
+      return this.storage.set(ALERGIA_KEY, toKeep);
+
+    });
+  }
   
   //----------------------------------------------------------------------------
 

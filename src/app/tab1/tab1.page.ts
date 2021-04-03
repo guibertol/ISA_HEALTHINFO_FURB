@@ -19,6 +19,7 @@ export class Tab1Page {
   @ViewChild('listaDoencas') listaDoencas: IonList;
   @ViewChild('listaContatos') listaContatos: IonList;
   @ViewChild('listaMedicamentos') listaMedicamentos: IonList;
+  @ViewChild('listaAlergias') listaAlergias: IonList;
 
   constructor(private storageService: StorageService, private plt: Platform) {
     this.loadDoencas();
@@ -82,6 +83,13 @@ export class Tab1Page {
     this.storageService.deleteContato(contato.id).then(contato => {
       this.listaContatos.closeSlidingItems();
       this.loadContatos();
+    });
+  }
+
+  deleteAlergia(alergia: Alergia){
+    this.storageService.deleteAlergia(alergia.id).then(alergia => {
+      this.listaAlergias.closeSlidingItems();
+      this.loadAlergias();
     });
   }
 
