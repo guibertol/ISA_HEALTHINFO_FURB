@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Doenca, Contato, Medicamento, Alergia, StorageService } from '../storage.service';
  
-import { Platform, ToastController, IonList,} from '@ionic/angular';
+import { Platform, ToastController, IonList, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab1',
@@ -21,7 +21,7 @@ export class Tab1Page {
   @ViewChild('listaMedicamentos') listaMedicamentos: IonList;
   @ViewChild('listaAlergias') listaAlergias: IonList;
 
-  constructor(private storageService: StorageService, private plt: Platform) {
+  constructor(private storageService: StorageService, private plt: Platform, public alertController: AlertController) {
     this.loadDoencas();
     this.loadContatos();
     this.loadAlergias();
@@ -61,13 +61,43 @@ export class Tab1Page {
   }
 
   updateDoenca(doenca: Doenca){
-    
-    doenca.title = 'UPDATE: ${doenca.title}';
-    doenca.modified = Date.now();
 
-    this.storageService.updateDoencas(doenca).then(doenca => {
-      this.listaDoencas.closeSlidingItems();
-      this.loadDoencas();
+    this.alertController.create({
+      header: 'Atualizar doença',
+      //subHeader: 'Aqui é um cabeçalho',
+      //message: 'Aqui é uma mensagem',
+      inputs: [
+        {
+          name: 'Nome',
+          placeholder: 'Digite o nome',
+          value: doenca.title
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: (data: any) => {
+            console.log('Cancelado', data);
+          }
+        },
+        {
+          text: 'Atualizar',
+          handler: (data: any) => {
+            console.log('Informações salvas', data);
+
+            doenca.title = data.Nome;
+            doenca.modified = Date.now();
+
+            this.storageService.updateDoencas(doenca).then(doenca => {
+              this.listaDoencas.closeSlidingItems();
+              this.loadDoencas();
+            });
+
+          }
+        }
+      ]
+    }).then(res => {
+      res.present();
     });
 
   }
