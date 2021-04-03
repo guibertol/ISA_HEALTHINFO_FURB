@@ -102,6 +102,44 @@ export class Tab1Page {
 
   }
 
+  updateAlergia(alergia: Alergia){
+    this.alertController.create({
+      header: 'Atualizar alergia',
+      inputs: [
+        {
+          name: 'Nome',
+          placeholder: 'Digite o nome',
+          value: alergia.nome
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: (data: any) => {
+            console.log('Cancelado', data);
+          }
+        },
+        {
+          text: 'Atualizar',
+          handler: (data: any) => {
+            console.log('Informações salvas', data);
+
+            alergia.nome = data.Nome;
+            alergia.modified = Date.now();
+
+            this.storageService.updateAlergias(alergia).then(alergia => {
+              this.listaAlergias.closeSlidingItems();
+              this.loadAlergias();
+            });
+
+          }
+        }
+      ]
+    }).then(res => {
+      res.present();
+    });
+  }
+
   deleteDoenca(doenca: Doenca){
     this.storageService.deleteDoencas(doenca.id).then(() => {
       this.listaDoencas.closeSlidingItems();
@@ -133,6 +171,7 @@ export class Tab1Page {
     this.loadDoencas();
     this.loadContatos();
     this.loadMedicamentos();
+    this.loadAlergias();
   }
 
 }

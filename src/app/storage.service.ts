@@ -123,6 +123,17 @@ export class StorageService {
     });
   }
 
+  updateAlergias(novaAlergia: Alergia): Promise<any>{
+    return this.storage.get(ALERGIA_KEY).then((alergias: Alergia[]) =>{
+      if(!alergias || alergias.length == 0){
+        return null;
+      }
+      const idUpdate = novaAlergia.id;
+      const novaLista = alergias.map( c => c.id === idUpdate ? novaAlergia : c);
+      return this.storage.set(ALERGIA_KEY, novaLista);
+    });
+  }
+
   //Aqui apaga o contato
   deleteContato(id: number): Promise<Contato>{
     return this.storage.get(CONTATO_KEY).then((contatos: Contato[]) =>{
