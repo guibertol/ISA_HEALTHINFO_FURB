@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AlertController, Platform } from '@ionic/angular';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-import { Item, Contato, StorageService } from '../storage.service';
+import { Doenca, Contato, StorageService } from '../storage.service';
 
 @Component({
   selector: 'app-tab3',
@@ -10,7 +10,7 @@ import { Item, Contato, StorageService } from '../storage.service';
 })
 export class Tab3Page {
 
-  items: Item[] = [];
+  items: Doenca[] = [];
   exibido = false;
 
   constructor(private plt: Platform, private alertCtrl: AlertController, private LocalNotifications: LocalNotifications, private strorageService: StorageService) {
@@ -50,7 +50,7 @@ export class Tab3Page {
   verificar_doencas(){
 
     var string = "";
-    this.strorageService.getItems().then(items => {
+    this.strorageService.getDoencas().then(items => {
       this.items = items;
     });
 

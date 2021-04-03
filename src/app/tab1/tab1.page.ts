@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Item, Contato, StorageService } from '../storage.service';
+import { Doenca, Contato, StorageService } from '../storage.service';
  
 import { Platform, ToastController, IonList,} from '@ionic/angular';
 
@@ -10,73 +10,71 @@ import { Platform, ToastController, IonList,} from '@ionic/angular';
 })
 export class Tab1Page {
 
-  items: Item[] = [];
-  newItem: Item = <Item>{};
+  doencas: Doenca[] = [];
+  newDoenca: Doenca = <Doenca>{};
   contatos: Contato[] = [];
 
   @ViewChild('mylist') mylist: IonList;
   @ViewChild('listaContatos') listaContatos: IonList;
 
   constructor(private strorageService: StorageService, private plt: Platform) {
-    this.plt.ready().then(() => {
-      this.loadItems;
-      this.listarContatos;
-    });
-    this.loadItems();
-    this.listarContatos();
+    this.loadDoencas();
+    this.loadContatos();
   }
 
-  loadItems(){
-    this.strorageService.getItems().then(items => {
-      this.items = items;
+  loadDoencas(){
+    this.strorageService.getDoencas().then(doencas => {
+      this.doencas = doencas;
     });
   }
 
-  listarContatos(){
+  loadContatos(){
     this.strorageService.getContatos().then(contatos => {
+      console.log(contatos)
       this.contatos = contatos;
     });
   }
 
-  addItem(){
-    this.newItem.modified = Date.now();
-    this.newItem.id = Date.now();
+  cadatrarDoenca(){
+    this.newDoenca.modified = Date.now();
+    this.newDoenca.id = Date.now();
 
-    this.strorageService.addItem(this.newItem).then(item => {
-      this.newItem = <Item>{};
-      this.loadItems();
+    this.strorageService.cadatrarDoenca(this.newDoenca).then(doenca => {
+      this.newDoenca = <Doenca>{};
+      this.loadDoencas();
     });
 
   }
 
-  updateItem(item: Item){
+  updateDoenca(doenca: Doenca){
     
-    item.title = 'UPDATE: ${item.title}';
-    item.modified = Date.now();
+    doenca.title = 'UPDATE: ${doenca.title}';
+    doenca.modified = Date.now();
 
-    this.strorageService.updateItem(item).then(item => {
+    this.strorageService.updateDoencas(doenca).then(doenca => {
       this.mylist.closeSlidingItems();
-      this.loadItems();
+      this.loadDoencas();
     });
 
   }
 
-  deleteItem(item: Item){
-    this.strorageService.delete(item.id).then(item => {
+  deleteDoenca(doenca: Doenca){
+    this.strorageService.deleteDoencas(doenca.id).then(doenca => {
       this.mylist.closeSlidingItems();
-      this.loadItems();
+      this.loadDoencas();
     });
   }
 
   deletarContato(contato: Contato){
     this.strorageService.deleteContato(contato.id).then(contato => {
       this.mylist.closeSlidingItems();
-      this.listarContatos();
+      this.loadContatos();
     });
   }
 
   ionViewWillEnter(){
-    this.loadItems();
+    this.loadDoencas();
+    this.loadContatos();
   }
 
 }
