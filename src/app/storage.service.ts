@@ -4,22 +4,31 @@ import { ToastController } from '@ionic/angular';
 
 export interface Doenca{
   id: number;
-  title: string;
-  value: string;
   modified: number;
+  title: string;
+  desc: string;
 }
 
 export interface Contato {
   id: number;
+  modified: number;
   nome: string;
   email: string;
   telefone: string;
+}
+
+export interface Medicamento {
+  id: number;
+  modified: number;
+  nome: string;
+  desc: string;
 }
 
 //
 
 const DOENCA_KEY = 'doencas';
 const CONTATO_KEY = 'contatos';
+const MEDICAM_KEY = 'medicamentos';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +38,7 @@ export class StorageService {
   constructor(private storage: Storage, public toastController: ToastController) { }
   
   //Aqui é onde adiciona a doença
-  cadatrarDoenca(novaDoenca: Doenca): Promise <any>{
+  cadastrarDoenca(novaDoenca: Doenca): Promise <any>{
     return this.storage.get(DOENCA_KEY).then((listaDoencas: Doenca[]) =>{
       if(listaDoencas){
         listaDoencas.push(novaDoenca);
@@ -94,8 +103,8 @@ export class StorageService {
     return this.storage.get(CONTATO_KEY);
   }
 
-  updateContatos(novoContato: Doenca): Promise<any>{
-    return this.storage.get(CONTATO_KEY).then((contatos: Doenca[]) =>{
+  updateContatos(novoContato: Contato): Promise<any>{
+    return this.storage.get(CONTATO_KEY).then((contatos: Contato[]) =>{
       if(!contatos || contatos.length == 0){
         //Atualizando uma doença sem ter nenhuma cadastrada
         return null;
@@ -121,6 +130,52 @@ export class StorageService {
     });
   }
 
+  //----------------------------------------------------------------------------
+
+  cadastrarMedicamento(novoMedicamento: Medicamento): Promise <any>{
+    return this.storage.get(MEDICAM_KEY).then((listaMedicamentos: Medicamento[]) =>{
+      if(listaMedicamentos){
+        listaMedicamentos.push(novoMedicamento);
+        return this.storage.set(MEDICAM_KEY, listaMedicamentos);
+      }else{
+        return this.storage.set(MEDICAM_KEY, [novoMedicamento]);
+      }
+    });
+  }
+
+  async getMedicamentos(): Promise<Medicamento[]>{
+    let medicamentos = await this.storage.get(MEDICAM_KEY);
+    return medicamentos;
+  }
+
+  updateMedicamentos(novoMedicamento: Medicamento): Promise<any>{
+    return this.storage.get(MEDICAM_KEY).then((listaMedicamentos: Medicamento[]) =>{
+      if(!listaMedicamentos || listaMedicamentos.length == 0){
+        return null;
+      }
+
+      const idUpdate = novoMedicamento.id;
+      const novaLista = listaMedicamentos.map( d => d.id === idUpdate ?
+                                             novoMedicamento : d);
+      return this.storage.set(MEDICAM_KEY, novaLista);
+    });
+  }
+
+
+  async deleteMedicamentos(id: number): Promise<void>{
+    const medicamentos = await this.storage.get(MEDICAM_KEY);
+    if(!medicamentos || medicamentos.length == 0){
+      console.log('errou')
+      console.log(medicamentos)
+      return;
+    }
+
+    const toKeep: Medicamento[] = medicamentos.filter( d => d.id !== id);
+    this.exibir_mensagem('Excluido com sucesso.');
+    this.storage.set(MEDICAM_KEY, toKeep);
+    return;
+  }
+  
   //----------------------------------------------------------------------------
 
   async exibir_mensagem(mensagem) {

@@ -18,15 +18,15 @@
 
   <ion-item>
     <ion-label position="fixed">Nome</ion-label>
-    <ion-input [(ngModel)]="newDoenca.title"></ion-input>
+    <ion-input [(ngModel)]="doenca.title"></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label position="fixed">Descrição</ion-label>
-    <ion-input [(ngModel)]="newDoenca.value"></ion-input>
+    <ion-input [(ngModel)]="doenca.desc"></ion-input>
   </ion-item>
 
-  <ion-button expand="full" (click)="cadatrarDoenca()">Cadastrar doença</ion-button>
+  <ion-button expand="full" (click)="cadastrarDoenca()">Cadastrar Doença</ion-button>
 
   <ion-item>
     <ion-label position="fixed">Nome</ion-label>
@@ -45,4 +45,15 @@
 
   <ion-button expand="full" (click)="cadastrarContato()">Cadastrar Contato</ion-button>
 
+  <ion-item>
+    <ion-label position="fixed">Nome</ion-label>
+    <ion-input [(ngModel)]="medicamento.title"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="fixed">Descrição</ion-label>
+    <ion-input [(ngModel)]="medicamento.desc"></ion-input>
+  </ion-item>
+
+  <ion-button expand="full" (click)="cadastrarMedicamento()">Cadastrar Medicamento</ion-button>
 </ion-content>

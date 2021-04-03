@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Doenca, Contato, StorageService } from '../storage.service';
+import { Doenca, Contato, Medicamento, StorageService } from '../storage.service';
  
 import { Platform, ToastController, IonList,} from '@ionic/angular';
 
@@ -13,33 +13,38 @@ export class Tab1Page {
   doencas: Doenca[] = [];
   newDoenca: Doenca = <Doenca>{};
   contatos: Contato[] = [];
+  medicamentos: Medicamento[] = [];
 
-  @ViewChild('mylist') mylist: IonList;
+  @ViewChild('listaDoencas') listaDoencas: IonList;
   @ViewChild('listaContatos') listaContatos: IonList;
+  @ViewChild('listaMedicamentos') listaMedicamentos: IonList;
 
-  constructor(private strorageService: StorageService, private plt: Platform) {
+  constructor(private storageService: StorageService, private plt: Platform) {
     this.loadDoencas();
     this.loadContatos();
   }
 
   loadDoencas(){
-    this.strorageService.getDoencas().then(doencas => {
+    this.storageService.getDoencas().then(doencas => {
       this.doencas = doencas;
     });
   }
 
   loadContatos(){
-    this.strorageService.getContatos().then(contatos => {
-      console.log(contatos)
+    this.storageService.getContatos().then(contatos => {
       this.contatos = contatos;
     });
   }
 
-  cadatrarDoenca(){
+  async loadMedicamentos() {
+    this.medicamentos = await this.storageService.getMedicamentos();
+  }
+
+  cadastrarDoenca(){
     this.newDoenca.modified = Date.now();
     this.newDoenca.id = Date.now();
 
-    this.strorageService.cadatrarDoenca(this.newDoenca).then(doenca => {
+    this.storageService.cadastrarDoenca(this.newDoenca).then(doenca => {
       this.newDoenca = <Doenca>{};
       this.loadDoencas();
     });
@@ -51,31 +56,37 @@ export class Tab1Page {
     doenca.title = 'UPDATE: ${doenca.title}';
     doenca.modified = Date.now();
 
-    this.strorageService.updateDoencas(doenca).then(doenca => {
-      this.mylist.closeSlidingItems();
+    this.storageService.updateDoencas(doenca).then(doenca => {
+      this.listaDoencas.closeSlidingItems();
       this.loadDoencas();
     });
 
   }
 
   deleteDoenca(doenca: Doenca){
-    this.strorageService.deleteDoencas(doenca.id).then(() => {
-      this.mylist.closeSlidingItems();
+    this.storageService.deleteDoencas(doenca.id).then(() => {
+      this.listaDoencas.closeSlidingItems();
       this.loadDoencas();
-      this.strorageService.deleteDoencas(doenca.id);
     });
   }
 
   deletarContato(contato: Contato){
-    this.strorageService.deleteContato(contato.id).then(contato => {
-      this.mylist.closeSlidingItems();
+    this.storageService.deleteContato(contato.id).then(contato => {
+      this.listaContatos.closeSlidingItems();
       this.loadContatos();
     });
+  }
+
+  async deleteMedicamento(medicamento: Medicamento) {
+    await this.storageService.deleteMedicamentos(medicamento.id);
+    this.listaMedicamentos.closeSlidingItems();
+    this.loadMedicamentos();
   }
 
   ionViewWillEnter(){
     this.loadDoencas();
     this.loadContatos();
+    this.loadMedicamentos();
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Doenca, Contato, StorageService } from '../storage.service';
+import { Doenca, Contato, Medicamento, StorageService } from '../storage.service';
  
 import { Platform, ToastController, IonList,} from '@ionic/angular';
 
@@ -10,25 +10,24 @@ import { Platform, ToastController, IonList,} from '@ionic/angular';
 })
 export class Tab2Page {
 
-  items: Doenca[] = [];
-  contatos: Contato[] = [];
-  newDoenca: Doenca = <Doenca>{};
+  doenca: Doenca = <Doenca>{};
   contato: Contato = <Contato>{};
+  medicamento: Medicamento = <Medicamento>{};
 
   @ViewChild('mylist') mylist: IonList;
 
-  constructor(private strorageService: StorageService, private plt: Platform, public toastController: ToastController) {
+  constructor(private storageService: StorageService, private plt: Platform, public toastController: ToastController) {
     /*this.plt.ready().then(() => {
       this.loadItems
     });*/
   }
 
-    cadatrarDoenca(){
-    this.newDoenca.modified = Date.now();
-    this.newDoenca.id = Date.now();
+  cadastrarDoenca(){
+    this.doenca.modified = Date.now();
+    this.doenca.id = Date.now();
 
-    this.strorageService.cadatrarDoenca(this.newDoenca).then(item => {
-      this.newDoenca = <Doenca>{};
+    this.storageService.cadastrarDoenca(this.doenca).then(item => {
+      this.doenca = <Doenca>{};
     });
 
    this.exibir_mensagem('Doença salva com sucesso.');
@@ -37,12 +36,25 @@ export class Tab2Page {
 
   cadastrarContato(){
 
+    this.contato.modified = Date.now();
     this.contato.id = Date.now();
-    this.strorageService.cadastrarContato(this.contato).then(item => {
+    this.storageService.cadastrarContato(this.contato).then(item => {
       this.contato = <Contato>{};
     });
 
     this.exibir_mensagem('Contato salvo com sucesso.');
+
+  }
+
+  cadastrarMedicamento(){
+
+    this.medicamento.modified = Date.now();
+    this.medicamento.id = Date.now();
+    this.storageService.cadastrarMedicamento(this.medicamento).then(item => {
+      this.medicamento = <Medicamento>{};
+    });
+
+    this.exibir_mensagem('Medicamento salvo com sucesso.');
 
   }
 
