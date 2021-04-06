@@ -11,6 +11,7 @@ import { Doenca, Contato, StorageService } from '../storage.service';
 export class Tab3Page {
 
   items: Doenca[] = [];
+  contatos: Contato[] = [];
   exibido = false;
 
   constructor(private plt: Platform, private alertCtrl: AlertController, private LocalNotifications: LocalNotifications, private strorageService: StorageService) {
@@ -59,6 +60,22 @@ export class Tab3Page {
         string += element.title;
       }else{
         string += ", "+element.title;
+      }
+      
+
+    });
+
+    this.strorageService.getContatos().then(contatos => {
+      this.contatos = contatos;
+    });
+
+    string += '\n'
+
+    this.contatos.forEach(element => {
+      if(string == ""){
+        string += element.nome+ '('+element.telefone+')';
+      }else{
+        string += "\n"+element.nome+ '('+element.telefone+')';
       }
       
 
