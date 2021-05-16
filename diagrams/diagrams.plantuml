@@ -1,0 +1,34 @@
+
+@startuml MER/MER
+
+
+entity Doenca{
+    --- pk ---
+    id: number;
+    --- data ---
+    modified: number;
+    title: string;
+    desc: string;
+}
+
+entity Contato {
+    --- pk ---
+    id: number;
+    --- data ---
+    modified: number;
+    nome: string;
+    email: string;
+    telefone: string;
+}
+
+entity Medicamento {
+    --- pk ---
+    id: number;
+    --- data ---
+    modified: number;
+    nome: string;
+    desc: string;
+}
+
+@enduml
+
