@@ -148,6 +148,7 @@ export class Tab1Page {
     });
   }
 
+  //Atualizar medicamento
   updateMedicamento(medicamento: Medicamento){
     this.alertController.create({
       header: 'Atualizar medicamento',
@@ -176,6 +177,57 @@ export class Tab1Page {
             this.storageService.updateMedicamentos(medicamento).then(medicamento => {
               this.listaMedicamentos.closeSlidingItems();
               this.loadMedicamentos();
+            });
+
+          }
+        }
+      ]
+    }).then(res => {
+      res.present();
+    });
+  }
+
+  //Atualizar contato
+  updateContato(contato: Contato){
+    this.alertController.create({
+      header: 'Atualizar contato',
+      inputs: [
+        {
+          name: 'Nome',
+          placeholder: 'Digite o nome',
+          value: contato.nome
+        },
+        {
+          name: 'Email',
+          placeholder: 'Digite o email',
+          value: contato.email
+        },
+        {
+          name: 'Telefone',
+          placeholder: 'Digite o telefone',
+          value: contato.telefone
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: (data: any) => {
+            console.log('Cancelado', data);
+          }
+        },
+        {
+          text: 'Atualizar',
+          handler: (data: any) => {
+            console.log('Informações salvas', data);
+
+            contato.nome = data.Nome;
+            contato.email = data.Email;
+            contato.telefone = data.Telefone
+            contato.modified = Date.now();
+
+            this.storageService.updateContatos(contato).then(contato => {
+              this.listaContatos.closeSlidingItems();
+              this.loadContatos();
             });
 
           }
