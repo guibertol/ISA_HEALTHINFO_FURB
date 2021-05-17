@@ -5,7 +5,7 @@ import { ToastController } from '@ionic/angular';
 export interface Doenca{
   id: number;
   modified: number;
-  title: string;
+  nome: string;
   desc: string;
 }
 

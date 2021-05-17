@@ -6,22 +6,31 @@
   </ion-toolbar>
 </ion-header>
 
-  
-
-
 <ion-content [fullscreen]="false">
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="cadastrarAlergia()"><ion-icon name="sad-outline"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="cadastrarMedicamento()"><ion-icon name="bandage-outline"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="cadastrarContato()"><ion-icon name="call-outline"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="cadastrarDoenca()"><ion-icon name="heart-dislike-outline"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
 
   <ion-list #listaDoencas>
 
     <ion-list-header>
-      <ion-label>Doenças crônicas</ion-label>
+      <ion-label><ion-icon name="heart-dislike-outline"></ion-icon> Doenças crônicas</ion-label>
     </ion-list-header>
 
     <ion-item-sliding *ngFor="let doenca of doencas">
 
       <ion-item>
         <ion-label text-wrap>
-          <h4>{{ doenca.title }}</h4>
+          <h4>{{ doenca.nome }}</h4>
           <ion-text color="secondary">
             <p>{{ doenca.desc }}</p>
           </ion-text>
@@ -40,7 +49,7 @@
   <ion-list #listaContatos>
 
     <ion-list-header>
-      <ion-label>Contatos de emergência</ion-label>
+      <ion-label><ion-icon name="call-outline"></ion-icon> Contatos de emergência</ion-label>
     </ion-list-header>
 
     <ion-item-sliding *ngFor="let contato of contatos">
@@ -66,14 +75,14 @@
   <ion-list #listaMedicamentos>
 
     <ion-list-header>
-      <ion-label>Medicamentos em uso</ion-label>
+      <ion-label><ion-icon name="bandage-outline"></ion-icon> Medicamentos em uso</ion-label>
     </ion-list-header>
 
     <ion-item-sliding *ngFor="let medicamento of medicamentos">
 
       <ion-item>
         <ion-label text-wrap>
-          <h4>{{ medicamento.title }}</h4>
+          <h4>{{ medicamento.nome }}</h4>
           <ion-text color="secondary">
             <p>{{ medicamento.desc }}</p>
           </ion-text>
@@ -92,7 +101,7 @@
   <ion-list #listaAlergias>
 
     <ion-list-header>
-      <ion-label>Alergias</ion-label>
+      <ion-label><ion-icon name="sad-outline"></ion-icon> Alergias</ion-label>
     </ion-list-header>
 
     <ion-item-sliding *ngFor="let alergia of alergias">

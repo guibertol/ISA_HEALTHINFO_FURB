@@ -57,9 +57,9 @@ export class Tab3Page {
 
     this.items.forEach(element => {
       if(string == ""){
-        string += element.title;
+        string += element.nome;
       }else{
-        string += ", "+element.title;
+        string += ", "+element.nome;
       }
       
 

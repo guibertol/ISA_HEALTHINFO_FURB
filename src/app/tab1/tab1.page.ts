@@ -11,10 +11,16 @@ import { Platform, ToastController, IonList, AlertController } from '@ionic/angu
 export class Tab1Page {
 
   doencas: Doenca[] = [];
-  newDoenca: Doenca = <Doenca>{};
+  
   contatos: Contato[] = [];
   medicamentos: Medicamento[] = [];
   alergias: Alergia[] = [];
+  doenca: Doenca;
+
+  newDoenca: Doenca = <Doenca>{};
+  newContato: Contato = <Contato>{};
+  newMedicamento: Medicamento = <Medicamento>{};
+  newAlergia: Alergia = <Alergia>{};
 
   @ViewChild('listaDoencas') listaDoencas: IonList;
   @ViewChild('listaContatos') listaContatos: IonList;
@@ -49,7 +55,7 @@ export class Tab1Page {
     this.medicamentos = await this.storageService.getMedicamentos();
   }
 
-  cadastrarDoenca(){
+  /*cadastrarDoenca(){
     this.newDoenca.modified = Date.now();
     this.newDoenca.id = Date.now();
 
@@ -58,7 +64,7 @@ export class Tab1Page {
       this.loadDoencas();
     });
 
-  }
+  }*/
 
   updateDoenca(doenca: Doenca){
 
@@ -70,7 +76,7 @@ export class Tab1Page {
         {
           name: 'Nome',
           placeholder: 'Digite o nome',
-          value: doenca.title
+          value: doenca.nome
         },
       ],
       buttons: [
@@ -85,7 +91,7 @@ export class Tab1Page {
           handler: (data: any) => {
             console.log('Informações salvas', data);
 
-            doenca.title = data.Nome;
+            doenca.nome = data.Nome;
             doenca.modified = Date.now();
 
             this.storageService.updateDoencas(doenca).then(doenca => {
@@ -172,6 +178,172 @@ export class Tab1Page {
     this.loadContatos();
     this.loadMedicamentos();
     this.loadAlergias();
+  }
+
+  //Cadastrar doença
+  cadastrarDoenca(){
+
+    this.alertController.create({
+      header: 'Cadastrar doença',
+      inputs: [
+        {
+          name: 'Nome',
+          placeholder: 'Digite o nome'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: (data: any) => {
+            console.log('Cancelado', data);
+          }
+        },
+        {
+          text: 'Cadastrar',
+          handler: (data: any) => {
+            
+            this.newDoenca.nome = data.Nome;
+            this.newDoenca.modified = Date.now();
+            this.newDoenca.id = Date.now();
+
+            this.storageService.cadastrarDoenca(this.newDoenca).then(doenca => {
+              this.newDoenca = <Doenca>{};
+              this.loadDoencas();
+            });
+            
+            console.log('aaaa');
+
+          }
+        }
+      ]
+    }).then(res => {
+      res.present();
+    });
+
+  }
+
+  //Cadastrar contato
+  cadastrarContato(){
+    this.alertController.create({
+      header: 'Cadastrar contato',
+      inputs: [
+        {
+          name: 'Nome',
+          placeholder: 'Digite o nome'
+        },
+        {
+          name: 'Email',
+          placeholder: 'Digite o email'
+        }
+        ,
+        {
+          name: 'Telefone',
+          placeholder: 'Digite o telefone'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: (data: any) => {
+            console.log('Cancelado', data);
+          }
+        },
+        {
+          text: 'Cadastrar',
+          handler: (data: any) => {
+            
+            this.newContato.nome = data.Nome;
+            this.newContato.email = data.Email;
+            this.newContato.telefone = data.Telefone;
+            this.newContato.id = Date.now();
+
+            this.storageService.cadastrarContato(this.newContato).then(doenca => {
+              this.newContato = <Contato>{};
+              this.loadContatos();
+            });
+            
+            console.log('aaaa');
+
+          }
+        }
+      ]
+    }).then(res => {
+      res.present();
+    });
+  }
+
+  //Cadastrar Medicamento
+  cadastrarMedicamento(){
+    this.alertController.create({
+      header: 'Cadastrar medicamento',
+      inputs: [
+        {
+          name: 'Nome',
+          placeholder: 'Digite o nome'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: (data: any) => {
+            console.log('Cancelado', data);
+          }
+        },
+        {
+          text: 'Cadastrar',
+          handler: (data: any) => {
+            
+            this.newMedicamento.nome = data.Nome;
+            this.newMedicamento.id = Date.now();
+
+            this.storageService.cadastrarMedicamento(this.newMedicamento).then(doenca => {
+              this.newMedicamento = <Medicamento>{};
+              this.loadMedicamentos();
+            });
+            
+          }
+        }
+      ]
+    }).then(res => {
+      res.present();
+    });
+  }
+
+  //Cadastrar alergia
+  cadastrarAlergia(){
+    this.alertController.create({
+      header: 'Cadastrar alergia',
+      inputs: [
+        {
+          name: 'Nome',
+          placeholder: 'Digite o nome'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: (data: any) => {
+            console.log('Cancelado', data);
+          }
+        },
+        {
+          text: 'Cadastrar',
+          handler: (data: any) => {
+            
+            this.newAlergia.nome = data.Nome;
+            this.newAlergia.id = Date.now();
+
+            this.storageService.cadastrarAlergia(this.newAlergia).then(doenca => {
+              this.newAlergia = <Alergia>{};
+              this.loadAlergias();
+            });
+            
+          }
+        }
+      ]
+    }).then(res => {
+      res.present();
+    });
   }
 
 }
