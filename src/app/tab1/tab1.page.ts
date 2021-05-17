@@ -66,6 +66,7 @@ export class Tab1Page {
 
   }*/
 
+  //Atualizar doença
   updateDoenca(doenca: Doenca){
 
     this.alertController.create({
@@ -108,6 +109,7 @@ export class Tab1Page {
 
   }
 
+  //Atualizar alergia
   updateAlergia(alergia: Alergia){
     this.alertController.create({
       header: 'Atualizar alergia',
@@ -136,6 +138,44 @@ export class Tab1Page {
             this.storageService.updateAlergias(alergia).then(alergia => {
               this.listaAlergias.closeSlidingItems();
               this.loadAlergias();
+            });
+
+          }
+        }
+      ]
+    }).then(res => {
+      res.present();
+    });
+  }
+
+  updateMedicamento(medicamento: Medicamento){
+    this.alertController.create({
+      header: 'Atualizar medicamento',
+      inputs: [
+        {
+          name: 'Nome',
+          placeholder: 'Digite o nome',
+          value: medicamento.nome
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          handler: (data: any) => {
+            console.log('Cancelado', data);
+          }
+        },
+        {
+          text: 'Atualizar',
+          handler: (data: any) => {
+            console.log('Informações salvas', data);
+
+            medicamento.nome = data.Nome;
+            medicamento.modified = Date.now();
+
+            this.storageService.updateMedicamentos(medicamento).then(medicamento => {
+              this.listaMedicamentos.closeSlidingItems();
+              this.loadMedicamentos();
             });
 
           }
