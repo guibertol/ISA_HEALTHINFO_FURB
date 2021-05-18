@@ -27,7 +27,7 @@ export class Tab1Page {
   @ViewChild('listaMedicamentos') listaMedicamentos: IonList;
   @ViewChild('listaAlergias') listaAlergias: IonList;
 
-  constructor(private storageService: StorageService, private plt: Platform, public alertController: AlertController) {
+  constructor(private storageService: StorageService, private plt: Platform, public alertController: AlertController, public toastController: ToastController) {
     this.loadDoencas();
     this.loadContatos();
     this.loadAlergias();
@@ -98,6 +98,7 @@ export class Tab1Page {
             this.storageService.updateDoencas(doenca).then(doenca => {
               this.listaDoencas.closeSlidingItems();
               this.loadDoencas();
+              this.exibir_mensagem('Atualizada com sucesso.');
             });
 
           }
@@ -138,6 +139,7 @@ export class Tab1Page {
             this.storageService.updateAlergias(alergia).then(alergia => {
               this.listaAlergias.closeSlidingItems();
               this.loadAlergias();
+              this.exibir_mensagem('Atualizada com sucesso.');
             });
 
           }
@@ -177,6 +179,7 @@ export class Tab1Page {
             this.storageService.updateMedicamentos(medicamento).then(medicamento => {
               this.listaMedicamentos.closeSlidingItems();
               this.loadMedicamentos();
+              this.exibir_mensagem('Atualizado com sucesso.');
             });
 
           }
@@ -228,6 +231,7 @@ export class Tab1Page {
             this.storageService.updateContatos(contato).then(contato => {
               this.listaContatos.closeSlidingItems();
               this.loadContatos();
+              this.exibir_mensagem('Atualizado com sucesso.');
             });
 
           }
@@ -301,6 +305,7 @@ export class Tab1Page {
             this.storageService.cadastrarDoenca(this.newDoenca).then(doenca => {
               this.newDoenca = <Doenca>{};
               this.loadDoencas();
+              this.exibir_mensagem('Doença salva com sucesso.');
             });
             
             console.log('aaaa');
@@ -352,6 +357,7 @@ export class Tab1Page {
             this.storageService.cadastrarContato(this.newContato).then(doenca => {
               this.newContato = <Contato>{};
               this.loadContatos();
+              this.exibir_mensagem('Contato salvo com sucesso.');
             });
             
             console.log('aaaa');
@@ -391,6 +397,7 @@ export class Tab1Page {
             this.storageService.cadastrarMedicamento(this.newMedicamento).then(doenca => {
               this.newMedicamento = <Medicamento>{};
               this.loadMedicamentos();
+              this.exibir_mensagem('Medicamento salvo com sucesso.');
             });
             
           }
@@ -428,6 +435,7 @@ export class Tab1Page {
             this.storageService.cadastrarAlergia(this.newAlergia).then(doenca => {
               this.newAlergia = <Alergia>{};
               this.loadAlergias();
+              this.exibir_mensagem('Alergia salva com sucesso.');
             });
             
           }
@@ -436,6 +444,14 @@ export class Tab1Page {
     }).then(res => {
       res.present();
     });
+  }
+
+  async exibir_mensagem(mensagem) {
+    const toast = await this.toastController.create({
+      message: mensagem,
+      duration: 2000
+    });
+    toast.present();
   }
 
 }
